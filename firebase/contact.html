@@ -1,0 +1,20 @@
+<h2 style="color: var(--primary);">Contact Us</h2>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+    <input type="text" id="name" placeholder="Your Name" style="padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+    <textarea id="message" placeholder="Message" style="padding: 10px; border-radius: 5px; border: 1px solid #ddd;"></textarea>
+    <button onclick="handleContact()" style="background: var(--primary); color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+        Send Message
+    </button>
+</div>
+
+<script>
+    async function handleContact() {
+        const name = document.getElementById('name').value;
+        const message = document.getElementById('message').value;
+        
+        const result = await window.sendToFirebase("messages", { name, message, date: new Date() });
+        if(result) {
+            alert("Success! Data saved in Firebase.");
+        }
+    }
+</script>

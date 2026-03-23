@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zelva Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a onclick="loadPage('home.html')">🏠 Home</a>
+        <a onclick="loadPage('contact.html')">📩 Contact</a>
+    </nav>
+
+    <main>
+        <div id="content">Loading...</div>
+    </main>
+
+    <script type="module">
+        import { add } from "./firebase/js/firestore.js";
+        
+        // Hacemos que la función 'add' sea accesible desde otros archivos HTML
+        window.sendToFirebase = add;
+
+        window.loadPage = async (url) => {
+            const container = document.getElementById('content');
+            try {
+                const response = await fetch(url);
+                container.innerHTML = await response.text();
+            } catch (err) {
+                container.innerHTML = "<h2>Error 404</h2><p>Page not found.</p>";
+            }
+        };
+
+        window.onload = () => window.loadPage('home.html');
+    </script>
+</body>
+</html>
