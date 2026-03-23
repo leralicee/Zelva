@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi SPA Profesional</title>
+    <title>Mi SPA con Firebase & GitHub</title>
     <style>
         :root {
             --primary: #4f46e5;
@@ -13,7 +13,7 @@
         }
 
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
             margin: 0; 
             background-color: var(--bg); 
             color: var(--text);
@@ -28,16 +28,17 @@
             padding: 1rem 2rem; 
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            justify-content: center;
         }
 
         nav a { 
             text-decoration: none; 
             color: var(--text); 
             font-weight: 600;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 8px;
-            transition: all 0.3s;
+            transition: 0.3s;
             cursor: pointer;
         }
 
@@ -53,22 +54,23 @@
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
+            box-sizing: border-box;
         }
 
         #content {
             background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            animation: fadeIn 0.5s ease;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        footer { text-align: center; padding: 1rem; font-size: 0.8rem; color: #64748b; }
+        footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #64748b; }
     </style>
 </head>
 <body>
@@ -85,19 +87,50 @@
     </main>
 
     <footer>
-        &copy; 2026 - Mi Web en Firebase & GitHub
+        &copy; 2026 - Proyecto Gratuito Firebase & GitHub
     </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Reemplaza esto con TUS datos de la consola de Firebase
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROYECTO.firebaseapp.com",
+            projectId: "TU_PROYECTO",
+            storageBucket: "TU_PROYECTO.appspot.com",
+            messagingSenderId: "TU_ID",
+            appId: "TU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Hacer las funciones disponibles globalmente para usarlas en contacto.html
+        window.enviarAFirebase = async (datos) => {
+            try {
+                const docRef = await addDoc(collection(db, "mensajes"), datos);
+                console.log("Documento escrito con ID: ", docRef.id);
+                return true;
+            } catch (e) {
+                console.error("Error al añadir documento: ", e);
+                return false;
+            }
+        };
+    </script>
 
     <script>
         async function loadPage(url) {
             const container = document.getElementById('content');
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error('Página no encontrada');
+                if (!response.ok) throw new Error();
                 const html = await response.text();
                 container.innerHTML = html;
             } catch (err) {
-                container.innerHTML = `<h2>Error 404</h2><p>No se pudo cargar el archivo ${url}. Asegúrate de que exista.</p>`;
+                container.innerHTML = `<h2>Error</h2><p>No se pudo cargar la sección.</p>`;
             }
         }
 
@@ -105,5 +138,5 @@
         window.onload = () => loadPage('home.html');
     </script>
 
-    </body>
+</body>
 </html>
